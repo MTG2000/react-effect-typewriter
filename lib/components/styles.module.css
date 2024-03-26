@@ -1,0 +1,11 @@
+.typewriter_paragraph {
+  position: relative;
+}
+
+.typewriter_paragraph::after {
+  content: attr(data-content);
+  color: var(--font-color, black);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
