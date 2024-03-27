@@ -3,12 +3,11 @@ import React, {
   createContext,
   useCallback,
   useEffect,
-  useState,
+  useRef,
 } from "react";
 import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
 
-// Define the context type
 type ContextType = {
   registerElement: (options: { onStart: () => void }) => () => void;
   finishedAnimation: () => void;
@@ -18,13 +17,10 @@ type RegisteredElement = {
   startAnimation: () => void;
 };
 
-// Create the context
 const TypewriterContext = createContext<ContextType | null>(null);
 
-// Create the context provider component
 const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [elements, setElements] = useState([] as RegisteredElement[]);
-  const [currentlyAnimatingElement, setCurrentlyAnimatingElement] = useState(0);
+  const elementsQueueRef = useRef<RegisteredElement[]>([]);
 
   const shouldStart = useShouldStart();
   const onFinishedAnimation = useOnFinishedAnimation();
@@ -33,10 +29,12 @@ const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
     ({ onStart }) => {
       const element = { startAnimation: onStart };
 
-      setElements((prev) => [...prev, element]);
+      elementsQueueRef.current.push(element);
 
       return () => {
-        setElements((prev) => prev.filter((el) => el !== element));
+        elementsQueueRef.current = elementsQueueRef.current.filter(
+          (el) => el !== element
+        );
       };
     },
     []
@@ -45,20 +43,20 @@ const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
   const finishedAnimation = useCallback<
     ContextType["finishedAnimation"]
   >(() => {
-    setCurrentlyAnimatingElement((prev) => prev + 1);
-  }, []);
+    const updatedElementsQueue = elementsQueueRef.current.slice(1);
+    elementsQueueRef.current = updatedElementsQueue;
+    if (updatedElementsQueue.length > 0) {
+      updatedElementsQueue[0].startAnimation();
+    } else {
+      onFinishedAnimation?.();
+    }
+  }, [onFinishedAnimation]);
 
   useEffect(() => {
-    if (elements.length === 0) return;
+    if (elementsQueueRef.current.length === 0) return;
 
-    if (!shouldStart) return;
-
-    if (currentlyAnimatingElement >= elements.length) {
-      onFinishedAnimation?.();
-      return;
-    }
-    elements[currentlyAnimatingElement].startAnimation();
-  }, [currentlyAnimatingElement, elements, onFinishedAnimation, shouldStart]);
+    if (shouldStart) elementsQueueRef.current[0].startAnimation();
+  }, [shouldStart]);
 
   return (
     <TypewriterContext.Provider
