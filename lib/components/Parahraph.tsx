@@ -1,13 +1,7 @@
-import {
-  useEffect,
-  useRef,
-  HTMLProps,
-  useLayoutEffect,
-  useState,
-  useContext,
-} from "react";
+import { useEffect, useRef, HTMLProps, useLayoutEffect } from "react";
 import styles from "./styles.module.css";
-import { TypewriterContext } from "./Container";
+import { useShouldStart } from "../hooks/useShouldStart";
+import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
 
 interface Props extends HTMLProps<HTMLParagraphElement> {
   children: React.ReactNode;
@@ -29,13 +23,8 @@ export default function Parahraph({
   const ref = useRef<HTMLParagraphElement>(null!);
   const callbacks = useRef({ onStart, onEnd, onCancel, onCharcter });
 
-  const layoutContext = useContext(TypewriterContext);
-
-  const insideContainer = layoutContext !== undefined;
-
-  const [shouldStartAnimation, setShouldStartAnimation] = useState(
-    insideContainer ? false : true
-  );
+  const shouldStart = useShouldStart();
+  const onFinishedAnimation = useOnFinishedAnimation();
 
   useLayoutEffect(() => {
     const paragraph = ref.current;
@@ -49,26 +38,8 @@ export default function Parahraph({
     };
   }, []);
 
-  const registerElement = layoutContext?.registerElement;
-
   useEffect(() => {
-    if (!insideContainer) return;
-
-    registerElement!({
-      start: () => {
-        setShouldStartAnimation(true);
-      },
-    });
-
-    return () => {
-      setShouldStartAnimation(false);
-    };
-  }, [insideContainer, registerElement]);
-
-  const notifyLayoutFinishedAnimation = layoutContext?.finishedAnimation;
-
-  useEffect(() => {
-    if (!shouldStartAnimation) return;
+    if (!shouldStart) return;
 
     const paragraph = ref.current;
 
@@ -98,7 +69,7 @@ export default function Parahraph({
       if (currentLetter === paragraphTextContent.length) {
         // done
         callbacks.current.onEnd?.();
-        notifyLayoutFinishedAnimation?.();
+        onFinishedAnimation?.();
       } else timeout = setTimeout(typeWriter, 50);
     };
 
@@ -112,7 +83,7 @@ export default function Parahraph({
       if (timeout) clearTimeout(timeout);
       onCancel?.();
     };
-  }, [notifyLayoutFinishedAnimation, shouldStartAnimation]);
+  }, [onFinishedAnimation, shouldStart]);
 
   return (
     <p

@@ -5,28 +5,39 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useShouldStart } from "../hooks/useShouldStart";
+import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
 
 // Define the context type
 type ContextType = {
-  registerElement: (options: { start: () => void }) => void;
+  registerElement: (options: { onStart: () => void }) => () => void;
   finishedAnimation: () => void;
 };
 
 type RegisteredElement = {
-  start: () => void;
+  startAnimation: () => void;
 };
 
 // Create the context
-const TypewriterContext = createContext<ContextType | undefined>(undefined);
+const TypewriterContext = createContext<ContextType | null>(null);
 
 // Create the context provider component
 const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [elements, setElements] = useState([] as RegisteredElement[]);
   const [currentlyAnimatingElement, setCurrentlyAnimatingElement] = useState(0);
 
-  const onRegisterElement = useCallback<ContextType["registerElement"]>(
-    ({ start }) => {
-      setElements((prev) => [...prev, { start }]);
+  const shouldStart = useShouldStart();
+  const onFinishedAnimation = useOnFinishedAnimation();
+
+  const handleRegisterElement = useCallback<ContextType["registerElement"]>(
+    ({ onStart }) => {
+      const element = { startAnimation: onStart };
+
+      setElements((prev) => [...prev, element]);
+
+      return () => {
+        setElements((prev) => prev.filter((el) => el !== element));
+      };
     },
     []
   );
@@ -40,12 +51,18 @@ const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     if (elements.length === 0) return;
 
-    elements[currentlyAnimatingElement].start();
-  }, [elements, currentlyAnimatingElement]);
+    if (!shouldStart) return;
+
+    if (currentlyAnimatingElement >= elements.length) {
+      onFinishedAnimation?.();
+      return;
+    }
+    elements[currentlyAnimatingElement].startAnimation();
+  }, [currentlyAnimatingElement, elements, onFinishedAnimation, shouldStart]);
 
   return (
     <TypewriterContext.Provider
-      value={{ registerElement: onRegisterElement, finishedAnimation }}
+      value={{ registerElement: handleRegisterElement, finishedAnimation }}
     >
       {children}
     </TypewriterContext.Provider>
