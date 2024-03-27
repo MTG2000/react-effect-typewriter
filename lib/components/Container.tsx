@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from "react";
 import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
@@ -19,25 +20,52 @@ type RegisteredElement = {
 
 const TypewriterContext = createContext<ContextType | null>(null);
 
-const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
+const Container: React.FC<{ children: ReactNode; enableLogs?: boolean }> = ({
+  children,
+  enableLogs,
+}) => {
   const elementsQueueRef = useRef<RegisteredElement[]>([]);
+  const [isQueueEmpty, setIsQueueEmpty] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const shouldStart = useShouldStart();
+  const shouldStart = useShouldStart() && !isAnimating;
   const onFinishedAnimation = useOnFinishedAnimation();
 
   const handleRegisterElement = useCallback<ContextType["registerElement"]>(
     ({ onStart }) => {
       const element = { startAnimation: onStart };
-
       elementsQueueRef.current.push(element);
+
+      if (enableLogs) {
+        console.log(
+          "Typewriter.Container: Registering element",
+          "Elements in queue",
+          elementsQueueRef.current.length
+        );
+      }
+
+      setIsQueueEmpty(false);
 
       return () => {
         elementsQueueRef.current = elementsQueueRef.current.filter(
           (el) => el !== element
         );
+
+        if (elementsQueueRef.current.length === 0) {
+          setIsQueueEmpty(true);
+          setIsAnimating(false);
+        }
+
+        if (enableLogs) {
+          console.log(
+            "Typewriter.Container: Unregistering element",
+            "Elements in queue",
+            elementsQueueRef.current.length
+          );
+        }
       };
     },
-    []
+    [enableLogs]
   );
 
   const finishedAnimation = useCallback<
@@ -45,18 +73,35 @@ const Container: React.FC<{ children: ReactNode }> = ({ children }) => {
   >(() => {
     const updatedElementsQueue = elementsQueueRef.current.slice(1);
     elementsQueueRef.current = updatedElementsQueue;
+
+    if (enableLogs) {
+      console.log(
+        "Typewriter.Container: Finished animation. Remaining elements:",
+        updatedElementsQueue.length
+      );
+    }
+
     if (updatedElementsQueue.length > 0) {
       updatedElementsQueue[0].startAnimation();
     } else {
       onFinishedAnimation?.();
+      setIsAnimating(false);
+      setIsQueueEmpty(true);
     }
-  }, [onFinishedAnimation]);
+  }, [enableLogs, onFinishedAnimation]);
 
   useEffect(() => {
-    if (elementsQueueRef.current.length === 0) return;
+    if (isQueueEmpty) return;
 
-    if (shouldStart) elementsQueueRef.current[0].startAnimation();
-  }, [shouldStart]);
+    if (shouldStart) {
+      if (enableLogs) {
+        console.log("Typewriter.Container: Starting animation");
+      }
+
+      elementsQueueRef.current[0].startAnimation();
+      setIsAnimating(true);
+    }
+  }, [enableLogs, isQueueEmpty, shouldStart]);
 
   return (
     <TypewriterContext.Provider
