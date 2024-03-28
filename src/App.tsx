@@ -1,5 +1,6 @@
 import "./App.css";
-import Typewriter from "../lib/main";
+import Typewriter from "../dist/main";
+import "../dist/css/style.css";
 import { useState } from "react";
 
 function App() {

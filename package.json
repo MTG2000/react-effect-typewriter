@@ -17,8 +17,8 @@
     "publishPatch": "npm version patch && npm publish"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=17",
+    "react-dom": ">=17"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
@@ -37,8 +37,7 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vite-plugin-dts": "^3.7.3",
-    "vite-plugin-lib-inject-css": "^2.0.1"
+    "vite-plugin-dts": "^3.7.3"
   },
   "sideEffects": [
     "*.css"
