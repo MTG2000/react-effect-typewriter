@@ -7,7 +7,7 @@ function App() {
   const [updateContainer2Text, setUpdateContainer2Text] = useState(false);
 
   return (
-    <Typewriter.Container>
+    <Typewriter.Container typeingSpeed={100}>
       <Typewriter.Container>
         <div className="text-left">
           <Typewriter.Parahraph
@@ -18,12 +18,15 @@ function App() {
               ? "Hello Container 1!"
               : "Hello Container 1 Updated!"}
           </Typewriter.Parahraph>
-          <Typewriter.Parahraph className="text-lg text-gray-300">
+          <Typewriter.Parahraph
+            className="text-lg text-gray-300"
+            typingSpeed={20}
+          >
             Lorem Ipsum is simply dummy text!
           </Typewriter.Parahraph>
         </div>
       </Typewriter.Container>
-      <Typewriter.Container>
+      <Typewriter.Container typeingSpeed={10}>
         <div className="text-left">
           <Typewriter.Parahraph
             key={updateContainer2Text ? "updated" : "not-updated"}

@@ -8,10 +8,12 @@ import React, {
 } from "react";
 import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
+import { useGetFinalTypingSpeed } from "../hooks/useGetFinalTypingSpeed";
 
 type ContextType = {
   registerElement: (options: { onStart: () => void }) => () => void;
   finishedAnimation: () => void;
+  typeingSpeed?: number;
 };
 
 type RegisteredElement = {
@@ -20,16 +22,18 @@ type RegisteredElement = {
 
 const TypewriterContext = createContext<ContextType | null>(null);
 
-const Container: React.FC<{ children: ReactNode; enableLogs?: boolean }> = ({
-  children,
-  enableLogs,
-}) => {
+const Container: React.FC<{
+  children: ReactNode;
+  typeingSpeed?: number;
+  enableLogs?: boolean;
+}> = ({ children, typeingSpeed, enableLogs }) => {
   const elementsQueueRef = useRef<RegisteredElement[]>([]);
   const [isQueueEmpty, setIsQueueEmpty] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const shouldStart = useShouldStart() && !isAnimating;
   const onFinishedAnimation = useOnFinishedAnimation();
+  const finalTypingSpeed = useGetFinalTypingSpeed(typeingSpeed);
 
   const handleRegisterElement = useCallback<ContextType["registerElement"]>(
     ({ onStart }) => {
@@ -105,7 +109,11 @@ const Container: React.FC<{ children: ReactNode; enableLogs?: boolean }> = ({
 
   return (
     <TypewriterContext.Provider
-      value={{ registerElement: handleRegisterElement, finishedAnimation }}
+      value={{
+        registerElement: handleRegisterElement,
+        finishedAnimation,
+        typeingSpeed: finalTypingSpeed,
+      }}
     >
       {children}
     </TypewriterContext.Provider>

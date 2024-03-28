@@ -2,22 +2,27 @@ import { useEffect, useRef, HTMLProps, useLayoutEffect } from "react";
 import styles from "./styles.module.css";
 import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
+import { useGetFinalTypingSpeed } from "../hooks/useGetFinalTypingSpeed";
 
 interface Props extends HTMLProps<HTMLParagraphElement> {
   children: React.ReactNode;
+  typingSpeed?: number;
   onStart?: () => void;
   onEnd?: () => void;
   onCancel?: () => void;
   onCharcter?: (char: string) => void;
 }
 
+const DEFAULT_TYPING_SPEED = 50;
+
 export default function Parahraph({
   children,
-  className,
+  typingSpeed,
   onStart,
   onEnd,
   onCancel,
   onCharcter,
+  className,
   ...restProps
 }: Props) {
   const ref = useRef<HTMLParagraphElement>(null!);
@@ -25,6 +30,10 @@ export default function Parahraph({
 
   const shouldStart = useShouldStart();
   const onFinishedAnimation = useOnFinishedAnimation();
+  const finalTypingSpeed = useGetFinalTypingSpeed(
+    typingSpeed,
+    DEFAULT_TYPING_SPEED
+  );
 
   useLayoutEffect(() => {
     const paragraph = ref.current;
@@ -70,7 +79,7 @@ export default function Parahraph({
         // done
         callbacks.current.onEnd?.();
         onFinishedAnimation?.();
-      } else timeout = setTimeout(typeWriter, 50);
+      } else timeout = setTimeout(typeWriter, finalTypingSpeed);
     };
 
     callbacks.current.onStart?.();
@@ -83,7 +92,7 @@ export default function Parahraph({
       if (timeout) clearTimeout(timeout);
       onCancel?.();
     };
-  }, [onFinishedAnimation, shouldStart]);
+  }, [finalTypingSpeed, onFinishedAnimation, shouldStart]);
 
   return (
     <p
