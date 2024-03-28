@@ -24,15 +24,21 @@ const TypewriterContext = createContext<ContextType | null>(null);
 export interface Props {
   children: React.ReactNode;
   typeingSpeed?: number;
+  delayBetweenElements?: number;
   enableLogs?: boolean;
 }
 
-const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
+const Container = ({
+  children,
+  typeingSpeed,
+  delayBetweenElements,
+  enableLogs,
+}: Props) => {
   const elementsQueueRef = useRef<RegisteredElement[]>([]);
   const [isQueueEmpty, setIsQueueEmpty] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const isAnimatingRef = useRef(false);
 
-  const shouldStart = useShouldStart() && !isAnimating;
+  const shouldStart = useShouldStart() && !isAnimatingRef.current;
   const onFinishedAnimation = useOnFinishedAnimation();
   const finalTypingSpeed = useGetFinalTypingSpeed(typeingSpeed);
 
@@ -51,14 +57,20 @@ const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
 
       setIsQueueEmpty(false);
 
-      return () => {
+      const unregister = () => {
+        const isCurrentlyAnimatingElement =
+          elementsQueueRef.current[0] === element &&
+          isAnimatingRef.current === true;
+
         elementsQueueRef.current = elementsQueueRef.current.filter(
           (el) => el !== element
         );
 
         if (elementsQueueRef.current.length === 0) {
           setIsQueueEmpty(true);
-          setIsAnimating(false);
+          isAnimatingRef.current = false;
+        } else if (isCurrentlyAnimatingElement) {
+          elementsQueueRef.current[0].startAnimation();
         }
 
         if (enableLogs) {
@@ -69,6 +81,8 @@ const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
           );
         }
       };
+
+      return unregister;
     },
     [enableLogs]
   );
@@ -87,13 +101,16 @@ const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
     }
 
     if (updatedElementsQueue.length > 0) {
-      updatedElementsQueue[0].startAnimation();
+      const elementToAnimate = updatedElementsQueue[0];
+      setTimeout(() => {
+        elementToAnimate.startAnimation();
+      }, delayBetweenElements);
     } else {
       setIsQueueEmpty(true);
-      setIsAnimating(false);
+      isAnimatingRef.current = false;
       onFinishedAnimation?.();
     }
-  }, [enableLogs, onFinishedAnimation]);
+  }, [delayBetweenElements, enableLogs, onFinishedAnimation]);
 
   useEffect(() => {
     if (isQueueEmpty) return;
@@ -104,7 +121,7 @@ const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
       }
 
       elementsQueueRef.current[0].startAnimation();
-      setIsAnimating(true);
+      isAnimatingRef.current = true;
     }
   }, [enableLogs, isQueueEmpty, shouldStart]);
 

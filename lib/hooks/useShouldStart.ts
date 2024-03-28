@@ -22,6 +22,7 @@ export const useShouldStart = () => {
 
     return () => {
       unregister();
+      setShouldStart(false);
     };
   }, [insideContainer, registerElement]);
 

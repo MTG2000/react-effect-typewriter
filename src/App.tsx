@@ -1,5 +1,5 @@
 import "./App.css";
-import Typewriter from "../dist/main";
+import Typewriter from "../lib/main";
 import { useState } from "react";
 
 function App() {
@@ -7,8 +7,8 @@ function App() {
   const [updateContainer2Text, setUpdateContainer2Text] = useState(false);
 
   return (
-    <Typewriter.Container typeingSpeed={100}>
-      <Typewriter.Container>
+    <Typewriter.Container typeingSpeed={100} delayBetweenElements={1500}>
+      <Typewriter.Container delayBetweenElements={1500}>
         <div className="text-left">
           <Typewriter.Parahraph
             key={updateContainer1Text ? "updated" : "not-updated"}
