@@ -1,4 +1,4 @@
-import { useEffect, useRef, HTMLProps, useLayoutEffect } from "react";
+import { useEffect, useRef, HTMLProps, useState } from "react";
 import styles from "./styles.module.css";
 import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
@@ -27,6 +27,7 @@ export default function Parahraph({
 }: Props) {
   const ref = useRef<HTMLParagraphElement>(null!);
   const callbacks = useRef({ onStart, onEnd, onCancel, onCharcter });
+  const [initiallyHidden, setInitiallyHidden] = useState(true);
 
   const shouldStart = useShouldStart();
   const onFinishedAnimation = useOnFinishedAnimation();
@@ -35,7 +36,11 @@ export default function Parahraph({
     DEFAULT_TYPING_SPEED
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (initiallyHidden) {
+      setInitiallyHidden(false);
+      return;
+    }
     const paragraph = ref.current;
 
     const initialColor = window.getComputedStyle(paragraph).color;
@@ -45,7 +50,7 @@ export default function Parahraph({
     return () => {
       paragraph.style.color = initialColor;
     };
-  }, []);
+  }, [initiallyHidden]);
 
   useEffect(() => {
     if (!shouldStart) return;
@@ -97,7 +102,9 @@ export default function Parahraph({
   return (
     <p
       ref={ref}
-      className={`${styles.typewriter_paragraph} ${className}`}
+      className={`${styles.typewriter_paragraph} ${
+        initiallyHidden && styles.typewriter_paragraph__hidden
+      } ${className}`}
       {...restProps}
     >
       {children}

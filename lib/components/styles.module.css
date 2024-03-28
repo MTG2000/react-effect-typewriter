@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.typewriter_paragraph__hidden {
+  color: transparent;
+}
+
 .typewriter_paragraph::after {
   content: attr(data-content);
   color: var(--font-color, black);

@@ -1,5 +1,4 @@
 import React, {
-  ReactNode,
   createContext,
   useCallback,
   useEffect,
@@ -22,11 +21,13 @@ type RegisteredElement = {
 
 const TypewriterContext = createContext<ContextType | null>(null);
 
-const Container: React.FC<{
-  children: ReactNode;
+export interface Props {
+  children: React.ReactNode;
   typeingSpeed?: number;
   enableLogs?: boolean;
-}> = ({ children, typeingSpeed, enableLogs }) => {
+}
+
+const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
   const elementsQueueRef = useRef<RegisteredElement[]>([]);
   const [isQueueEmpty, setIsQueueEmpty] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
