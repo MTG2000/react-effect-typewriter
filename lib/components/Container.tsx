@@ -89,9 +89,9 @@ const Container = ({ children, typeingSpeed, enableLogs }: Props) => {
     if (updatedElementsQueue.length > 0) {
       updatedElementsQueue[0].startAnimation();
     } else {
-      onFinishedAnimation?.();
-      setIsAnimating(false);
       setIsQueueEmpty(true);
+      setIsAnimating(false);
+      onFinishedAnimation?.();
     }
   }, [enableLogs, onFinishedAnimation]);
 
