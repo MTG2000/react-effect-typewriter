@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
@@ -13,6 +14,12 @@ export default defineConfig({
       include: ["lib"],
     }),
   ],
+
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: "./tests/setupTest.ts",
+  },
 
   build: {
     copyPublicDir: false,
