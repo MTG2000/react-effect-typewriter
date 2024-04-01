@@ -35,7 +35,7 @@ These options are:
 - `onCancel`?: (Optional) A callback that is triggered if the typing animation is cancelled.
 - `onCharacter`?: (Optional) A callback that is triggered each time a character is typed. The typed character is passed as an argument to this function.
 
-#### Nesting Paragraphs
+### Nesting Paragraphs
 
 By default, the `Paragraph` element will start its animation as soon as it mounts on the DOM.
 However, you might have multiple paragraphs & you only want a paragraph to start appearing once the previous paragraphs have fully appeared, or you want them to only appear once a certain condition is met, for that, there is another element which is the `Typewriter.Container` element.
@@ -43,7 +43,7 @@ However, you might have multiple paragraphs & you only want a paragraph to start
 The `Container` element will make all its `Paragraph` children (doesn't have to be direct) only animate one after the other, based on the order of their appearance in the tree.
 It can also have another `Container` component as a children, so it will wait for the child `Container` to finish all its nested children before moving to other elements.
 
-Example Usage:
+#### Example Usage:
 
 ```jsx
 import Typewriter from "react-effect-typewriter";
@@ -68,8 +68,8 @@ function App() {
 
 The Container component can take the following props:
 
-`typingSpeed`?: (Optional) This speed will be overwriten by the typingSpeed prop in child Paragraph components.
-`delayBetweenElements`?: (Optional) The delay between the start of the animation of each child element. Defined in milliseconds.
+- `typingSpeed`?: (Optional) This speed will be overwriten by the typingSpeed prop in child Paragraph components.
+- `delayBetweenElements`?: (Optional) The delay between the start of the animation of each child element. Defined in milliseconds.
 
 ### How the effect is created
 
