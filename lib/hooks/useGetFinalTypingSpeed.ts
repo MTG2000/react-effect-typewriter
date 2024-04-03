@@ -9,7 +9,7 @@ function useGetFinalTypingSpeed(
 function useGetFinalTypingSpeed(speed?: number, defaultSpeed?: number) {
   const ctx = useContext(TypewriterContext);
 
-  const inheritedSpeed = ctx?.typeingSpeed;
+  const inheritedSpeed = ctx?.typingSpeed;
 
   return speed ?? inheritedSpeed ?? defaultSpeed;
 }

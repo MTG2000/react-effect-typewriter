@@ -7,7 +7,7 @@ function App() {
   const [updateContainer2Text, setUpdateContainer2Text] = useState(false);
 
   return (
-    <Typewriter.Container typeingSpeed={100} delayBetweenElements={1500}>
+    <Typewriter.Container typingSpeed={100} delayBetweenElements={1500}>
       <Typewriter.Container delayBetweenElements={1500}>
         <div className="text-left">
           <Typewriter.Parahraph
@@ -27,7 +27,7 @@ function App() {
           </Typewriter.Parahraph>
         </div>
       </Typewriter.Container>
-      <Typewriter.Container typeingSpeed={10}>
+      <Typewriter.Container typingSpeed={10}>
         <div className="text-left">
           <Typewriter.Parahraph
             key={updateContainer2Text ? "updated" : "not-updated"}

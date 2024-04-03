@@ -29,7 +29,8 @@ Under the hood, the `Typewriter.Paragraph` is a normal `<p>` element, so you can
 In addition to that, there are a couple of custom props that you can use to customize the effect.
 These options are:
 
-- `typingSpeed`?: (Optional) The speed with which the characters are typed. Defined in milliseconds.
+- `typingSpeed`?: (Optional) The speed with which the characters are typed. Defined in milliseconds. (default: `50`)
+- `startAnimation`?: (Optional) If true, will start animation on mount, otherwise will wait for the prop value to become true. (default: `true`)
 - `onStart`?: (Optional) A callback that is triggered when the typing animation starts.
 - `onEnd`?: (Optional) A callback that is triggered when the typing animation ends.
 - `onCancel`?: (Optional) A callback that is triggered if the typing animation is cancelled.
@@ -69,7 +70,8 @@ function App() {
 The Container component can take the following props:
 
 - `typingSpeed`?: (Optional) This speed will be overwriten by the typingSpeed prop in child Paragraph components.
-- `delayBetweenElements`?: (Optional) The delay between the start of the animation of each child element. Defined in milliseconds.
+- `startAnimation`?: (Optional) If true, will start children animations on mount, otherwise will wait for the prop value to become true. (default: `true`)
+- `delayBetweenElements`?: (Optional) The delay between the start of the animation of each child element. Defined in milliseconds. (default: `0`)
 
 ### How the effect is created
 

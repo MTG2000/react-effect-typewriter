@@ -1,5 +1,10 @@
 import Paragraph from "../lib/components/Parahraph";
 import { render, screen, waitFor } from "@testing-library/react";
+import {
+  expectElementToBeHidden,
+  expectElementToFullyAppeared,
+  expectElementToHaveTextAppeared,
+} from "./helpers";
 
 describe("Paragraph", () => {
   it("should render correctly", async () => {
@@ -79,21 +84,3 @@ describe("Paragraph", () => {
     expectElementToHaveTextAppeared(el, "T");
   });
 });
-
-function expectElementToBeHidden(text: string) {
-  const element = screen.getByText(text);
-
-  const dataContentAttribute = element.getAttribute("data-content");
-
-  expect(
-    dataContentAttribute === null || dataContentAttribute === ""
-  ).toBeTruthy();
-}
-
-function expectElementToFullyAppeared(text: string) {
-  expect(screen.getByText(text)).toHaveAttribute("data-content", text);
-}
-
-function expectElementToHaveTextAppeared(element: HTMLElement, text: string) {
-  expect(element).toHaveAttribute("data-content", text);
-}

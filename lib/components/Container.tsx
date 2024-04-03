@@ -12,7 +12,7 @@ import { useRegisterContainer } from "../hooks/useRegisterContainer";
 type ContextType = {
   registerElement: (options: { onStart: () => void }) => () => void;
   finishedAnimation: () => void;
-  typeingSpeed?: number;
+  typingSpeed?: number;
 };
 
 type RegisteredElement = {
@@ -23,7 +23,7 @@ const TypewriterContext = createContext<ContextType | null>(null);
 
 export interface Props {
   children: React.ReactNode;
-  typeingSpeed?: number;
+  typingSpeed?: number;
   startAnimation?: boolean;
   delayBetweenElements?: number;
   enableLogs?: boolean;
@@ -31,7 +31,7 @@ export interface Props {
 
 const Container = ({
   children,
-  typeingSpeed,
+  typingSpeed,
   startAnimation = true,
   delayBetweenElements,
   enableLogs,
@@ -45,7 +45,7 @@ const Container = ({
   });
 
   const onFinishedAnimation = useOnFinishedAnimation();
-  const finalTypingSpeed = useGetFinalTypingSpeed(typeingSpeed);
+  const finalTypingSpeed = useGetFinalTypingSpeed(typingSpeed);
 
   const handleRegisterElement = useCallback<ContextType["registerElement"]>(
     ({ onStart }) => {
@@ -136,7 +136,7 @@ const Container = ({
       value={{
         registerElement: handleRegisterElement,
         finishedAnimation,
-        typeingSpeed: finalTypingSpeed,
+        typingSpeed: finalTypingSpeed,
       }}
     >
       {children}
