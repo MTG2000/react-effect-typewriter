@@ -5,8 +5,6 @@ describe("Paragraph", () => {
   it("should render correctly", async () => {
     render(<Paragraph>Test</Paragraph>);
 
-    expectElementToBeHidden("Test", { isFirstElement: true });
-
     const el = screen.getByText("Test");
 
     expectElementToHaveTextAppeared(el, "T");
@@ -16,10 +14,8 @@ describe("Paragraph", () => {
     });
   });
 
-  it("should render correctly according to the typing speed", async () => {
+  it("should appear according to the typing speed", async () => {
     render(<Paragraph typingSpeed={100}>Test</Paragraph>);
-
-    expectElementToBeHidden("Test", { isFirstElement: true });
 
     const el = screen.getByText("Test");
 
@@ -52,8 +48,6 @@ describe("Paragraph", () => {
       </Paragraph>
     );
 
-    expectElementToBeHidden("Test", { isFirstElement: true });
-
     const el = screen.getByText("Test");
 
     expectElementToHaveTextAppeared(el, "T");
@@ -71,16 +65,29 @@ describe("Paragraph", () => {
 
     expect(onEnd).toHaveBeenCalledTimes(1);
   });
+
+  it("should not start when 'startAnimation' is false", async () => {
+    const { rerender } = render(
+      <Paragraph startAnimation={false}>Test</Paragraph>
+    );
+
+    expectElementToBeHidden("Test");
+
+    rerender(<Paragraph startAnimation={true}>Test</Paragraph>);
+
+    const el = screen.getByText("Test");
+    expectElementToHaveTextAppeared(el, "T");
+  });
 });
 
-function expectElementToBeHidden(
-  text: string,
-  options?: { isFirstElement?: boolean }
-) {
-  expect(screen.getByText(text)).toHaveAttribute(
-    "data-content",
-    options?.isFirstElement ? text[0] : ""
-  );
+function expectElementToBeHidden(text: string) {
+  const element = screen.getByText(text);
+
+  const dataContentAttribute = element.getAttribute("data-content");
+
+  expect(
+    dataContentAttribute === null || dataContentAttribute === ""
+  ).toBeTruthy();
 }
 
 function expectElementToFullyAppeared(text: string) {

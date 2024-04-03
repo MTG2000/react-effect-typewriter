@@ -5,9 +5,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useShouldStart } from "../hooks/useShouldStart";
 import { useOnFinishedAnimation } from "../hooks/useOnFinishedAnimation";
 import { useGetFinalTypingSpeed } from "../hooks/useGetFinalTypingSpeed";
+import { useRegisterContainer } from "../hooks/useRegisterContainer";
 
 type ContextType = {
   registerElement: (options: { onStart: () => void }) => () => void;
@@ -24,6 +24,7 @@ const TypewriterContext = createContext<ContextType | null>(null);
 export interface Props {
   children: React.ReactNode;
   typeingSpeed?: number;
+  startAnimation?: boolean;
   delayBetweenElements?: number;
   enableLogs?: boolean;
 }
@@ -31,6 +32,7 @@ export interface Props {
 const Container = ({
   children,
   typeingSpeed,
+  startAnimation = true,
   delayBetweenElements,
   enableLogs,
 }: Props) => {
@@ -38,7 +40,10 @@ const Container = ({
   const [isQueueEmpty, setIsQueueEmpty] = useState(false);
   const isAnimatingRef = useRef(false);
 
-  const shouldStart = useShouldStart() && !isAnimatingRef.current;
+  const { shouldStart: containerShouldStart } = useRegisterContainer({
+    startAnimation,
+  });
+
   const onFinishedAnimation = useOnFinishedAnimation();
   const finalTypingSpeed = useGetFinalTypingSpeed(typeingSpeed);
 
@@ -115,15 +120,16 @@ const Container = ({
   useEffect(() => {
     if (isQueueEmpty) return;
 
-    if (shouldStart) {
-      if (enableLogs) {
-        console.log("Typewriter.Container: Starting animation");
-      }
+    if (!containerShouldStart || isAnimatingRef.current || !startAnimation)
+      return;
 
-      elementsQueueRef.current[0].startAnimation();
-      isAnimatingRef.current = true;
+    if (enableLogs) {
+      console.log("Typewriter.Container: Starting animation");
     }
-  }, [enableLogs, isQueueEmpty, shouldStart]);
+
+    elementsQueueRef.current[0].startAnimation();
+    isAnimatingRef.current = true;
+  }, [containerShouldStart, enableLogs, isQueueEmpty, startAnimation]);
 
   return (
     <TypewriterContext.Provider

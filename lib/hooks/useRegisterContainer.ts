@@ -1,7 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { TypewriterContext } from "../components/Container";
 
-export const useShouldStart = () => {
+type Options = {
+  startAnimation?: boolean;
+};
+
+export const useRegisterContainer = (options: Options) => {
   const layoutContext = useContext(TypewriterContext);
   const insideContainer = layoutContext !== null;
 
@@ -13,6 +17,7 @@ export const useShouldStart = () => {
 
   useEffect(() => {
     if (!insideContainer) return;
+    if (options.startAnimation === false) return;
 
     const unregister = registerElement!({
       onStart: () => {
@@ -24,7 +29,9 @@ export const useShouldStart = () => {
       unregister();
       setShouldStart(false);
     };
-  }, [insideContainer, registerElement]);
+  }, [insideContainer, options.startAnimation, registerElement]);
 
-  return shouldStart;
+  return {
+    shouldStart,
+  };
 };

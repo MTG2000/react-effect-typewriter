@@ -20,6 +20,7 @@ function App() {
           </Typewriter.Parahraph>
           <Typewriter.Parahraph
             className="text-lg text-gray-300"
+            startAnimation={updateContainer2Text}
             typingSpeed={20}
           >
             Lorem Ipsum is simply dummy text!
