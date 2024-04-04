@@ -37,7 +37,7 @@ const Container = ({
   enableLogs,
 }: Props) => {
   const elementsQueueRef = useRef<RegisteredElement[]>([]);
-  const [isQueueEmpty, setIsQueueEmpty] = useState(false);
+  const [isQueueEmpty, setIsQueueEmpty] = useState(true);
   const isAnimatingRef = useRef(false);
 
   const { shouldStart: containerShouldStart } = useRegisterContainer({

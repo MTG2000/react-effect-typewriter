@@ -11,7 +11,7 @@ function useGetFinalTypingSpeed(speed?: number, defaultSpeed?: number) {
 
   const inheritedSpeed = ctx?.typingSpeed;
 
-  return speed ?? inheritedSpeed ?? defaultSpeed;
+  return speed ?? inheritedSpeed ?? defaultSpeed ?? 0;
 }
 
 export { useGetFinalTypingSpeed };
