@@ -27,9 +27,11 @@ export default function Parahraph({
   className,
   ...restProps
 }: Props) {
-  const ref = useRef<HTMLParagraphElement>(null!);
+  const paragraphRef = useRef<HTMLParagraphElement>(null!);
+  const visibleTextRef = useRef<HTMLSpanElement>(null!);
   const callbacks = useRef({ onStart, onEnd, onCancel, onCharcter });
   const [initiallyHidden, setInitiallyHidden] = useState(true);
+  const [visibleText, setVisibleText] = useState("");
 
   const { shouldStart: containerShouldStart } = useRegisterContainer({
     startAnimation,
@@ -46,7 +48,7 @@ export default function Parahraph({
       setInitiallyHidden(false);
       return;
     }
-    const paragraph = ref.current;
+    const paragraph = paragraphRef.current;
 
     const initialColor = window.getComputedStyle(paragraph).color;
     paragraph.style.color = "transparent";
@@ -60,29 +62,23 @@ export default function Parahraph({
   useEffect(() => {
     if (!containerShouldStart || !startAnimation) return;
 
-    const paragraph = ref.current;
+    const paragraph = paragraphRef.current;
 
-    if (!paragraph) return;
-
-    const paragraphTextContent = paragraph.textContent ?? "";
+    visibleTextRef.current.innerText = "";
 
     let currentLetter = 0;
     let cancel = false;
     let timeout: NodeJS.Timeout | null = null;
+    const paragraphTextContent = paragraph.innerText ?? "";
 
     const typeWriter = () => {
       if (cancel) return;
 
       if (currentLetter < paragraphTextContent.length) {
-        paragraph.setAttribute(
-          "data-content",
-          paragraphTextContent.slice(0, currentLetter + 1)
-        );
+        setVisibleText(paragraphTextContent.slice(0, currentLetter + 1));
 
         callbacks.current.onCharcter?.(paragraphTextContent[currentLetter]);
         currentLetter++;
-      } else {
-        // done
       }
 
       if (currentLetter === paragraphTextContent.length) {
@@ -111,13 +107,20 @@ export default function Parahraph({
 
   return (
     <p
-      ref={ref}
+      ref={paragraphRef}
       className={`${styles.typewriter_paragraph} ${
         initiallyHidden && styles.typewriter_paragraph__hidden
       } ${className}`}
       {...restProps}
+      data-content={visibleText}
     >
       {children}
+      <span
+        ref={visibleTextRef}
+        className={styles.visible_text}
+        data-content={visibleText}
+        aria-hidden
+      ></span>
     </p>
   );
 }

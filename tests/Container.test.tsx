@@ -34,9 +34,13 @@ describe("Container", () => {
     const el = screen.getByText("Test");
 
     expectElementToHaveTextAppeared(el, "T");
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expectElementToHaveTextAppeared(el, "Te");
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expectElementToHaveTextAppeared(el, "Tes");
 
     await waitFor(() => {

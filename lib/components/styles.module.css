@@ -6,10 +6,18 @@
   color: transparent;
 }
 
-.typewriter_paragraph::after {
-  content: attr(data-content);
-  color: var(--font-color, black);
+.visible_text {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
+  color: var(--font-color, black);
+}
+
+.visible_text::before {
+  content: attr(data-content);
+}
+
+.visible_text::after {
+  content: "|";
+  position: absolute;
 }

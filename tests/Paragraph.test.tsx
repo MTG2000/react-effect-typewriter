@@ -1,5 +1,5 @@
 import Paragraph from "../lib/components/Parahraph";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import {
   expectElementToBeHidden,
   expectElementToFullyAppeared,
@@ -25,9 +25,13 @@ describe("Paragraph", () => {
     const el = screen.getByText("Test");
 
     expectElementToHaveTextAppeared(el, "T");
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expectElementToHaveTextAppeared(el, "Te");
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expectElementToHaveTextAppeared(el, "Tes");
 
     await waitFor(() => {
@@ -59,13 +63,19 @@ describe("Paragraph", () => {
     expect(onStart).toHaveBeenCalledTimes(1);
     expect(onCharcter).toHaveBeenCalledWith("T");
 
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expect(onCharcter).toHaveBeenCalledWith("e");
 
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expect(onCharcter).toHaveBeenCalledWith("s");
 
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     expect(onCharcter).toHaveBeenCalledWith("t");
 
     expect(onEnd).toHaveBeenCalledTimes(1);
