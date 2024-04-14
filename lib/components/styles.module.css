@@ -17,7 +17,7 @@
   content: attr(data-content);
 }
 
-.visible_text::after {
+/* .visible_text::after {
   content: "|";
   position: absolute;
-}
+} */
