@@ -21,9 +21,9 @@
     "test": "vitest",
     "prepublishOnly": "npm run build",
     "publishPatch": "npm version patch && npm publish",
-    "build-docs": "vite build --config vite.config.docs.ts",
-    "predeploy-docs": "npm run build-docs",
-    "deploy-docs": "gh-pages -d docs"
+    "build-demo": "vite build --config vite.config.demo.ts",
+    "predeploy-demo": "npm run build-demo",
+    "deploy-demo": "gh-pages -d demo"
   },
   "peerDependencies": {
     "react": ">=17",
