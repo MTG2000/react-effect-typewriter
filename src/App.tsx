@@ -1,61 +1,17 @@
 import "./App.css";
 import Typewriter from "../lib/main";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import PaperImage from "./assets/paper.jpg";
 
 function App() {
   return (
-    // <Typewriter.Container typingSpeed={100} delayBetweenElements={1500}>
-    //   <Typewriter.Container delayBetweenElements={1500}>
-    //     <div className="text-left">
-    //       <Typewriter.Parahraph
-    //         key={updateContainer1Text ? "updated" : "not-updated"}
-    //         className="text-8xl text-cyan-500"
-    //       >
-    //         {!updateContainer1Text
-    //           ? "Hello Container 1!"
-    //           : "Hello Container 1 Updated!"}
-    //       </Typewriter.Parahraph>
-    //       <Typewriter.Parahraph
-    //         className="text-lg text-gray-300"
-    //         startAnimation={updateContainer2Text}
-    //         typingSpeed={20}
-    //       >
-    //         Lorem Ipsum is simply dummy text!
-    //       </Typewriter.Parahraph>
-    //     </div>
-    //   </Typewriter.Container>
-    //   <Typewriter.Container typingSpeed={10}>
-    //     <div className="text-left">
-    //       <Typewriter.Parahraph
-    //         key={updateContainer2Text ? "updated" : "not-updated"}
-    //         className="text-8xl text-cyan-500"
-    //       >
-    //         {!updateContainer2Text
-    //           ? "Hello Container 2!"
-    //           : "Hello Container 2 Updated!"}
-    //       </Typewriter.Parahraph>
-    //       <Typewriter.Parahraph className="text-lg text-gray-300">
-    //         Lorem Ipsum is simply dummy text!
-    //       </Typewriter.Parahraph>
-    //     </div>
-    //   </Typewriter.Container>
-
-    //   <div className="space-x-4 mt-5">
-    //     <button
-    //       className="bg-blue-600 text-white p-4 "
-    //       onClick={() => setUpdateContainer1Text((prev) => !prev)}
-    //     >
-    //       Update Container1 Text
-    //     </button>
-    //     <button
-    //       className="bg-blue-600 text-white p-4"
-    //       onClick={() => setUpdateContainer2Text((prev) => !prev)}
-    //     >
-    //       Update Container2 Text
-    //     </button>
-    //   </div>
-    // </Typewriter.Container>
-    <main className="w-full mx-auto max-w-[70ch] flex flex-col gap-32 py-40">
+    <main className="w-full mx-auto max-w-[70ch] flex flex-col gap-32 py-40 isolate">
+      <div
+        className="absolute inset-0 -z-10 opacity-20"
+        style={{
+          backgroundImage: `url(${PaperImage})`,
+        }}
+      ></div>
       <section className="flex flex-col place-content-center place-items-center mx-auto">
         <Typewriter.Container typingSpeed={50}>
           <Typewriter.Parahraph className="text-6xl font-extrabold">
@@ -70,17 +26,14 @@ function App() {
       </section>
 
       <section>
-        <code className="bg-gray-700 p-4 rounded-xl flex gap-4 items-center w-fit mx-auto">
+        <code className="bg-gray-700 text-white p-4 rounded-xl flex gap-4 items-center w-fit mx-auto">
           <span>{">"}</span>
           <Typewriter.Parahraph>
             npm install react-effect-typewriter
           </Typewriter.Parahraph>
-          <CopyToClipboard
-            text="npm install react-effect-typewriter"
-            onCopy={() => alert("Copied code to clipboard")}
-          >
+          <CopyToClipboard text="npm install react-effect-typewriter">
             <button
-              className="ms-4 hover:scale-110 active:scale-95"
+              className="ms-4 hover:scale-110 active:scale-95 active:text-green-500"
               aria-label="Copy installation code to clipboard"
             >
               <svg
@@ -92,7 +45,7 @@ function App() {
                 xmlns="http://www.w3.org/2000/svg"
                 width={16}
                 viewBox="0 0 448 512"
-                fill="white"
+                fill="currentColor"
               >
                 <path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path>
               </svg>
@@ -104,7 +57,7 @@ function App() {
       <section className="">
         <Typewriter.Container typingSpeed={30}>
           <Typewriter.Parahraph className="text-4xl font-bold mt-5 mb-2">
-            Library Features ✨
+            ✨ Features
           </Typewriter.Parahraph>
           <ul className="text-left">
             <li>
@@ -133,12 +86,12 @@ function App() {
         </Typewriter.Container>
       </section>
       <section>
-        <nav className="flex flex-wrap gap-5 justify-center">
+        <nav className="flex flex-col flex-wrap gap-5 justify-center">
           <a
             href="https://github.com/MTG2000/react-effect-typewriter?tab=readme-ov-file#usage"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline hover:text-cyan-200"
+            className="text-gray-800 underline hover:text-cyan-700"
           >
             How to Use
             <svg
@@ -156,7 +109,7 @@ function App() {
             href="https://github.com/MTG2000/react-effect-typewriter"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline hover:text-cyan-200"
+            className="text-gray-800 underline hover:text-cyan-700"
           >
             View on GitHub{" "}
             <svg
@@ -174,7 +127,7 @@ function App() {
             href="https://www.npmjs.com/package/react-effect-typewriter"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline hover:text-cyan-200"
+            className="text-gray-800 underline hover:text-cyan-700"
           >
             View on NPM{" "}
             <svg
