@@ -6,6 +6,8 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "homepage": "https://MTG2000.github.io/react-effect-typewriter",
+  "author": "Mohammed Taher Ghazal <mtg.software.dev@gmail.com>",
+  "license": "MIT",
   "files": [
     "dist"
   ],
