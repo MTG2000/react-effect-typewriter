@@ -15,7 +15,7 @@ function App() {
         ></div>
         <section className="flex flex-col place-content-center place-items-center text-left">
           <Typewriter.Container>
-            <Typewriter.Parahraph className="text-7xl font-extrabold">
+            <Typewriter.Parahraph className="text-4xl md:text-7xl font-extrabold">
               React Typewriter Effect
             </Typewriter.Parahraph>
             <Typewriter.Parahraph className="text-xl mt-5" typingSpeed={30}>
