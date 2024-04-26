@@ -17,7 +17,7 @@ npm install react-effect-typewriter
 All you need to start using the library is importing it & using the `Paragraph` element & it'll immediately give you the effect, see the code below:
 
 ```javascript
-import Typewriter from "react-effect-typewriter";
+import * as Typewriter from "react-effect-typewriter";
 
 const App = () => {
   return <Typewriter.Paragraph>Hello Typewriter!</Typewriter.Paragraph>;
@@ -47,7 +47,7 @@ It can also have another `Container` component as a children, so it will wait fo
 #### Example Usage:
 
 ```jsx
-import Typewriter from "react-effect-typewriter";
+import * as Typewriter from "react-effect-typewriter";
 
 function App() {
   return (
