@@ -16,7 +16,7 @@ interface Props extends HTMLProps<HTMLParagraphElement> {
 
 const DEFAULT_TYPING_SPEED = 50;
 
-export default function Parahraph({
+export default function Paragraph({
   children,
   typingSpeed,
   startAnimation = true,

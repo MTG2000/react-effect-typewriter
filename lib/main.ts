@@ -1,8 +1,8 @@
-import Parahraph from "./components/Parahraph";
+import Paragraph from "./components/Paragraph";
 import { Container } from "./components/Container";
 
 const Typewriter = {
-  Parahraph,
+  Paragraph,
   Container,
 };
 

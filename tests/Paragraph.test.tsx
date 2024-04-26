@@ -1,4 +1,4 @@
-import Paragraph from "../lib/components/Parahraph";
+import Paragraph from "../lib/components/Paragraph";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import {
   expectElementToBeHidden,

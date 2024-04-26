@@ -20,7 +20,7 @@ All you need to start using the library is importing it & using the `Paragraph` 
 import Typewriter from "react-effect-typewriter";
 
 const App = () => {
-  return <Typewriter.Parahraph>Hello Typewriter!</Typewriter.Parahraph>;
+  return <Typewriter.Paragraph>Hello Typewriter!</Typewriter.Paragraph>;
 };
 ```
 

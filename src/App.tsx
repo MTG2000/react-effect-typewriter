@@ -15,23 +15,23 @@ function App() {
         ></div>
         <section className="flex flex-col place-content-center place-items-center text-left">
           <Typewriter.Container>
-            <Typewriter.Parahraph className="text-4xl md:text-7xl font-extrabold">
+            <Typewriter.Paragraph className="text-4xl md:text-7xl font-extrabold">
               React Typewriter Effect
-            </Typewriter.Parahraph>
-            <Typewriter.Parahraph className="text-xl mt-5" typingSpeed={30}>
+            </Typewriter.Paragraph>
+            <Typewriter.Paragraph className="text-xl mt-5" typingSpeed={30}>
               A typewriter effect is a cool way to animate text in your website
               where each letter appears one by one like it's being typed by a
               typewriter.
-            </Typewriter.Parahraph>
+            </Typewriter.Paragraph>
           </Typewriter.Container>
         </section>
 
         <section>
           <code className="bg-gray-700 text-white p-4 rounded-xl flex gap-4 items-center w-fit mx-auto">
             <span>{">"}</span>
-            <Typewriter.Parahraph>
+            <Typewriter.Paragraph>
               npm install react-effect-typewriter
-            </Typewriter.Parahraph>
+            </Typewriter.Paragraph>
             <CopyToClipboard text="npm install react-effect-typewriter">
               <button
                 className="ms-4 hover:scale-110 active:scale-95 active:text-green-500"
@@ -57,34 +57,34 @@ function App() {
 
         <section className="">
           <Typewriter.Container typingSpeed={30}>
-            <Typewriter.Parahraph
+            <Typewriter.Paragraph
               typingSpeed={50}
               className="text-4xl font-bold mt-5 mb-2"
             >
               ✨ Features
-            </Typewriter.Parahraph>
+            </Typewriter.Paragraph>
             <ul className="text-left">
               <li>
-                <Typewriter.Parahraph className="text-xl inline-block">
+                <Typewriter.Paragraph className="text-xl inline-block">
                   {"-"} Accessible & SEO friendly.
-                </Typewriter.Parahraph>
+                </Typewriter.Paragraph>
               </li>
               <li>
-                <Typewriter.Parahraph className="text-xl inline-block">
+                <Typewriter.Paragraph className="text-xl inline-block">
                   {"-"} Very lightweight. (less than 10kb)
-                </Typewriter.Parahraph>
+                </Typewriter.Paragraph>
               </li>
               <li>
-                <Typewriter.Parahraph className="text-xl inline-block">
+                <Typewriter.Paragraph className="text-xl inline-block">
                   {"-"} Very easy to use.
-                </Typewriter.Parahraph>
+                </Typewriter.Paragraph>
               </li>
               <li>
-                <Typewriter.Parahraph className="text-xl inline-block">
+                <Typewriter.Paragraph className="text-xl inline-block">
                   {"-"} Highly customizable. You can customize the typing speed,
                   delay between elements, when to start typing, children
                   stagger, and more.
-                </Typewriter.Parahraph>
+                </Typewriter.Paragraph>
               </li>
             </ul>
           </Typewriter.Container>
