@@ -6,4 +6,6 @@ const Typewriter = {
   Container,
 };
 
+export { Paragraph, Container };
+
 export default Typewriter;
